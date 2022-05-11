@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Aplikasi Cerita</string>
+    <string name="btntocamera">Ambil dari Kamera</string>
+    <string name="btntofile">Buka Berkas</string>
+    <string name="btnToSignIn">Sudah mempunyai Akun</string>
+    <string name="btnToSignUp">Belum mempunyai Akun</string>
+    <string name="tvlogin">Masuk</string>
+    <string name="tvregister">Daftar</string>
+    <string name="tvpassword">Kata sandi :</string>
+    <string name="hintpassword">Kata sandi</string>
+    <string name="tvname">Nama :</string>
+    <string name="hintname">Nama</string>
+    <string name="uploadStories">Unggah Cerita</string>
+    <string name="btntoupload">Unggah</string>
+    <string name="title_detail">Detail Cerita</string>
+    <string name="password_error">katasandi kurang dari 6 karakter</string>
+    <string name="password_kosong">Password kosong</string>
+
+</resources>
