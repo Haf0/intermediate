@@ -21,12 +21,18 @@ import com.bangkit.intermediate.view.addStory.AddStoryActivity
 import com.bangkit.intermediate.view.first.FirstActivity
 import com.bangkit.intermediate.view.maps.MapsActivity
 import com.bangkit.intermediate.viewmodel.HomeViewModel.HomeVM
+import com.bangkit.intermediate.viewmodel.HomeViewModel.StoryViewModel
+import com.bangkit.intermediate.viewmodel.HomeViewModel.StoryViewModelFactory
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var homeVM: HomeVM
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+    private lateinit var storiesAdapter: StoriesAdapter
+    private val storyViewModel: StoryViewModel by viewModels {
+        StoryViewModelFactory(this, SessionPreference.getInstance(dataStore))
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,39 +42,22 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.rvStories.setHasFixedSize(true)
-        binding.rvStories.layoutManager = LinearLayoutManager(this)
+        //binding.rvStories.setHasFixedSize(true)
+        setAdapter()
+
 
         homeVM = ViewModelProvider(
             this,
             ViewModelFactory(SessionPreference.getInstance(dataStore))
         )[HomeVM::class.java]
 
-        var token = ""
-
-        homeVM.getUser().observe(
-            this
-        ){
-            token = it.token
-            getStoriesResponse(token)
-        }
-        homeVM.list.observe(this){
-            if (it!= null) {
-                val storiesAdapter = StoriesAdapter(it.listStory)
-                binding.rvStories.adapter = storiesAdapter
-            }
-        }
 
         binding.fab.setOnClickListener {
+            finish()
             startActivity(Intent(this,AddStoryActivity::class.java))
         }
 
     }
-
-    fun getStoriesResponse(token:String){
-        homeVM.getListStories(token)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
@@ -94,6 +83,15 @@ class HomeActivity : AppCompatActivity() {
             }
             else -> false
 
+        }
+    }
+
+    fun setAdapter(){
+        storiesAdapter = StoriesAdapter()
+        binding.rvStories.layoutManager = LinearLayoutManager(this)
+        binding.rvStories.adapter = storiesAdapter
+        storyViewModel.getAllStory.observe(this){
+            storiesAdapter.submitData(lifecycle,it)
         }
     }
 }

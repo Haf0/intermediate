@@ -4,9 +4,11 @@ import com.bangkit.intermediate.model.Login.LoginResponse
 import com.bangkit.intermediate.model.Register.RegisterResponse
 import com.bangkit.intermediate.model.stories.StoriesResponse
 import com.bangkit.intermediate.model.addstories.AddStoryResponse
+import com.bangkit.intermediate.model.stories.StoriesResponseWithLocation
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -28,9 +30,11 @@ interface ApiService {
 
 
     @GET("stories")
-    fun getAllStories(
-        @Header("Authorization") token: String
-    ):Call<StoriesResponse>
+    suspend fun getAllStories(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ):Response<StoriesResponse>
 
     @Multipart
     @POST("stories")
@@ -39,4 +43,10 @@ interface ApiService {
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody
     ):Call<AddStoryResponse>
+
+    @GET("stories")
+    fun getAllStorieswithLocation(
+        @Header("Authorization") token: String,
+        @Query("location") loc : Int = 1
+    ):Call<StoriesResponseWithLocation>
 }

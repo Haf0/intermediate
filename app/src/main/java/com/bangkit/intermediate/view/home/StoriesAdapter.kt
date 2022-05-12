@@ -3,13 +3,15 @@ package com.bangkit.intermediate.view.home
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.intermediate.databinding.ItemRowStoryBinding
 import com.bangkit.intermediate.model.stories.ListStoryItem
 import com.bangkit.intermediate.view.detail.DetailActivity
 import com.bumptech.glide.Glide
 
-class StoriesAdapter(private val listStories: List<ListStoryItem?>?):RecyclerView.Adapter<StoriesAdapter.storiesAdapter>() {
+class StoriesAdapter: PagingDataAdapter<ListStoryItem, StoriesAdapter.storiesAdapter>(DIFF_CALLBACK) {
     inner class storiesAdapter (val binding: ItemRowStoryBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): storiesAdapter {
@@ -18,7 +20,7 @@ class StoriesAdapter(private val listStories: List<ListStoryItem?>?):RecyclerVie
     }
 
     override fun onBindViewHolder(holder: storiesAdapter, position: Int) {
-        val story = listStories!![position]
+        val story = getItem(position)
         holder.binding.tvStorytittle.text = story!!.name
         Glide.with(holder.itemView.context)
             .load(story.photoUrl)
@@ -32,5 +34,24 @@ class StoriesAdapter(private val listStories: List<ListStoryItem?>?):RecyclerVie
         }
     }
 
-    override fun getItemCount(): Int = listStories!!.size
+    companion object{
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>(){
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: ListStoryItem,
+                newItem: ListStoryItem
+            ): Boolean {
+                return oldItem.name == newItem.name &&
+                        oldItem.photoUrl == newItem.photoUrl &&
+                        oldItem.id == newItem.id &&
+                        oldItem.createdAt == newItem.createdAt &&
+                        oldItem.description == newItem.description
+            }
+
+        }
+    }
+
 }

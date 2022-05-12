@@ -133,6 +133,7 @@ class AddStoryActivity : AppCompatActivity() {
 //            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
 //            startActivity(i)
             finish()
+            startActivity(Intent(this, HomeActivity::class.java))
         }
     }
     private fun reduceFileImage(file: File): File {

@@ -2,7 +2,6 @@ package com.bangkit.intermediate.view.maps
 
 import android.content.Context
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -12,9 +11,7 @@ import com.bangkit.intermediate.R
 import com.bangkit.intermediate.databinding.ActivityMapsBinding
 import com.bangkit.intermediate.preference.SessionPreference
 import com.bangkit.intermediate.preference.ViewModelFactory
-import com.bangkit.intermediate.view.home.StoriesAdapter
 import com.bangkit.intermediate.viewmodel.HomeViewModel.HomeVM
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -78,6 +75,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun getStoriesResponse(token:String){
-        homeVM.getListStories(token)
+        homeVM.getListStoriesWithLocation(token)
     }
 }
